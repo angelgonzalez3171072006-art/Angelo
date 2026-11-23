@@ -1,0 +1,61 @@
+erDiagram
+    USERS ||--o{ SALES : registra
+    USERS ||--o{ INVENTORY_MOVEMENTS : realiza
+    CATEGORIES ||--o{ PRODUCTS : clasifica
+    PRODUCTS ||--o{ SALE_ITEMS : aparece_en
+    SALES ||--|{ SALE_ITEMS : contiene
+    PRODUCTS ||--o{ INVENTORY_MOVEMENTS : genera
+    SALES o|--o{ INVENTORY_MOVEMENTS : origina
+
+    USERS {
+      bigint id PK
+      varchar username UK
+      varchar full_name
+      varchar password_hash
+      enum role
+      boolean active
+      timestamp created_at
+    }
+    CATEGORIES {
+      bigint id PK
+      varchar name UK
+      boolean active
+    }
+    PRODUCTS {
+      bigint id PK
+      bigint category_id FK
+      varchar name
+      text description
+      decimal price
+      int stock
+      date expiry_date
+      boolean active
+      timestamp created_at
+      timestamp updated_at
+    }
+    SALES {
+      bigint id PK
+      bigint user_id FK
+      enum sale_type
+      decimal total
+      enum status
+      timestamp created_at
+    }
+    SALE_ITEMS {
+      bigint id PK
+      bigint sale_id FK
+      bigint product_id FK
+      int quantity
+      decimal unit_price
+      decimal subtotal
+    }
+    INVENTORY_MOVEMENTS {
+      bigint id PK
+      bigint product_id FK
+      bigint user_id FK
+      enum movement_type
+      int quantity
+      varchar reason
+      bigint sale_id FK
+      timestamp created_at
+    }
